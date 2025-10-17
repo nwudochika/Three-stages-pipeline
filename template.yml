@@ -1,0 +1,31 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: EC2 instance with Apache web server
+
+Parameters:
+  KeyName:
+    Description: Name of an existing EC2 key pair for SSH access to the EC2 instance.
+    Type: AWS::EC2::KeyPair::KeyName
+
+Resources:
+  WebServer:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: ami-052064a798f08f0d3
+      InstanceType: t2.micro
+      KeyName: !Ref KeyName
+      SecurityGroupIds:
+        - sg-04d53c31feb35ba09
+      SubnetId: subnet-07af715769b426119
+      UserData:
+        Fn::Base64: |
+          #!/bin/bash
+          yum update -y
+          yum install -y httpd
+          systemctl start httpd
+          systemctl enable httpd
+          echo "NWUDO CHIKAEZE" > /var/www/html/index.html
+
+Outputs:
+  PublicId:
+    Description: Public IP address of the newly created EC2 instance
+    Value: !GetAtt WebServer.PublicIp
