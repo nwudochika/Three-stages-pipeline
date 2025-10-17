@@ -1,10 +1,10 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: EC2 instance with Apache web server
 
-Parameters:
-  KeyName:
-    Description: Name of an existing EC2 key pair for SSH access to the EC2 instance.
-    Type: AWS::EC2::KeyPair::KeyName
+# Parameters:
+#   KeyName:
+#     Description: Name of an existing EC2 key pair for SSH access to the EC2 instance.
+#     Type: AWS::EC2::KeyPair::KeyName
 
 Resources:
   WebServer:
@@ -12,7 +12,7 @@ Resources:
     Properties:
       ImageId: ami-052064a798f08f0d3
       InstanceType: t2.micro
-      KeyName: !Ref KeyName
+      # KeyName: !Ref KeyName
       SecurityGroupIds:
         - sg-04d53c31feb35ba09
       SubnetId: subnet-07af715769b426119
