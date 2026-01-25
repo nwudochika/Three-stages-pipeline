@@ -1,21 +1,33 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: EC2 instance with Apache web server
 
-# Parameters:
-#   KeyName:
-#     Description: Name of an existing EC2 key pair for SSH access to the EC2 instance.
-#     Type: AWS::EC2::KeyPair::KeyName
+Parameters:
+  SecurityGroupId:
+    Description: Security Group ID that allows HTTP (80) and SSH (22)
+    Type: AWS::EC2::SecurityGroup::Id
+
+Mappings: 
+  RegionMap: 
+    us-east-1: 
+      AMI: ami-0532be01f26a3de55
+    us-west-1: 
+      AMI: ami-0993d3759749c153c
+
+  RegionSubnetMap:
+    us-east-1:
+      SubnetId: subnet-07af715769b426119
+    us-west-1:
+      SubnetId: subnet-0efeff9d25d8d403f
 
 Resources:
   WebServer:
     Type: AWS::EC2::Instance
     Properties:
-      ImageId: ami-0532be01f26a3de55
+      ImageId: !FindInMap [RegionMap, !Ref "AWS::Region", AMI]
       InstanceType: t2.micro
-      # KeyName: !Ref KeyName
       SecurityGroupIds:
-        - sg-04d53c31feb35ba09
-      SubnetId: subnet-07af715769b426119
+        - !Ref SecurityGroupId
+      SubnetId: !FindInMap [RegionSubnetMap, !Ref "AWS::Region", SubnetId]
       UserData:
         Fn::Base64: |
           #!/bin/bash
@@ -26,6 +38,6 @@ Resources:
           echo "NWUDO CHIKAEZE" > /var/www/html/index.html
 
 Outputs:
-  PublicId:
-    Description: Public IP address of the newly created EC2 instance
+  WebServerPublicIP:
+    Description: Public IP address of the EC2 instance
     Value: !GetAtt WebServer.PublicIp
