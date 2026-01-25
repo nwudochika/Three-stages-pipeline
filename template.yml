@@ -5,11 +5,11 @@ Mappings:
   RegionMap:
     us-east-1:
       AMI: ami-0532be01f26a3de55
-      VpcId: vpc-0aaa1111aaaa1111
+      VpcId: vpc-01c19dd73679be2d0
       SubnetId: subnet-07af715769b426119
     us-west-1:
       AMI: ami-0993d3759749c153c
-      VpcId: vpc-0bbb2222bbbb2222
+      VpcId: vpc-090913e8e6e7fad83
       SubnetId: subnet-0efeff9d25d8d403f
 
 Resources:
