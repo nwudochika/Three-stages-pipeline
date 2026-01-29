@@ -1,42 +1,21 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: EC2 with Apache and region-specific VPC + Security Group
+Description: EC2 instance with Apache web server
 
-Mappings:
-  RegionMap:
-    us-east-1:
-      AMI: ami-0532be01f26a3de55
-      VpcId: vpc-01c19dd73679be2d0
-      SubnetId: subnet-07af715769b426119
-    us-west-1:
-      AMI: ami-0993d3759749c153c
-      VpcId: vpc-090913e8e6e7fad83
-      SubnetId: subnet-0efeff9d25d8d403f
+# Parameters:
+#   KeyName:
+#     Description: Name of an existing EC2 key pair for SSH access to the EC2 instance.
+#     Type: AWS::EC2::KeyPair::KeyName
 
 Resources:
-
-  WebServerSecurityGroup:
-    Type: AWS::EC2::SecurityGroup
-    Properties:
-      GroupDescription: Allow HTTP and SSH
-      VpcId: !FindInMap [RegionMap, !Ref "AWS::Region", VpcId]
-      SecurityGroupIngress:
-        - IpProtocol: tcp
-          FromPort: 22
-          ToPort: 22
-          CidrIp: 0.0.0.0/0
-        - IpProtocol: tcp
-          FromPort: 80
-          ToPort: 80
-          CidrIp: 0.0.0.0/0
-
   WebServer:
     Type: AWS::EC2::Instance
     Properties:
-      ImageId: !FindInMap [RegionMap, !Ref "AWS::Region", AMI]
+      ImageId: ami-0532be01f26a3de55
       InstanceType: t2.micro
-      SubnetId: !FindInMap [RegionMap, !Ref "AWS::Region", SubnetId]
+      # KeyName: !Ref KeyName
       SecurityGroupIds:
-        - !Ref WebServerSecurityGroup
+        - sg-04d53c31feb35ba09
+      SubnetId: subnet-07af715769b426119
       UserData:
         Fn::Base64: |
           #!/bin/bash
@@ -47,6 +26,6 @@ Resources:
           echo "NWUDO CHIKAEZE" > /var/www/html/index.html
 
 Outputs:
-  InstancePublicIP:
-    Description: Public IP address of the EC2 instance
+  PublicId:
+    Description: Public IP address of the newly created EC2 instance
     Value: !GetAtt WebServer.PublicIp
