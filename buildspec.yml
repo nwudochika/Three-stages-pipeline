@@ -23,8 +23,8 @@ phases:
       - cfn-lint template.yml
       - echo === template test completed ===
       - echo === BUILD THE TEMPLATE ===
-      - aws cloudformation package --template-file template.yml --s3-bucket fidelis-deployed-artifact-bucket --output-template-file build-artifact-us-east-1.yml --region us-east-1
-      - aws cloudformation package --template-file template.yml --s3-bucket fidelis-deployed-artifact-bucket-uswest1 --output-template-file build-artifact-us-west-1.yml --region us-west-1
+      - aws cloudformation package --template-file template.yml --s3-bucket fidelis-deployed-artifact-bucket --output-template build-artifact-us-east-1.yml --region us-east-1
+      - aws cloudformation package --template-file template.yml --s3-bucket fidelis-deployed-artifact-bucket-uswest1 --output-template build-artifact-us-west-1.yml --region us-west-1
 
 
   post_build:
