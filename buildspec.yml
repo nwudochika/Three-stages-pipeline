@@ -21,9 +21,11 @@ phases:
     commands:
       - echo === Test the template ===
       - cfn-lint template.yml
+
+      
       - echo === template test completed ===
       - echo === BUILD THE TEMPLATE ===
-      - aws cloudformation package --template-file template.yml --s3-bucket nwudodevopsbucket --output-template-file build-artifact.yml
+      - aws cloudformation package --template-file template.yml --s3-bucket fidelis-deployed-artifact-bucket --output-template-file build-artifact.yml
 
   post_build:
     commands:
